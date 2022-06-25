@@ -281,3 +281,49 @@ make up_build
 make start
 ```
 
+- Browse to the frontend web page [http://localhost:9080](http://localhost:9080) to test send mail
+- Browse to the mailhot web page [http://localhost:8025](http://localhost:8025) to view mail received
+
+# Lab 21: Add RabbitMQ Stub Listener
+
+- add rabbitmq to docker-compose.yml
+
+```
+mkdir listener-service
+touch main.go
+go mod init listener
+```
+
+```
+docker-compose up -d
+cd listener-service
+go mod tidy
+go run .
+```
+
+- the listener service should connect to the RabbitMQ
+
+# Lab 22: Make Listener Service to run in the container
+
+- Create docker file
+- update Makefile
+- update 
+
+```
+cd project
+make stop
+make down
+docker image rm project_broker-service
+docker image rm project_postgres
+docker image rm project_authentication-service
+docker image rm project_mongo
+docker image rm project_logger-service
+docker image rm project_mailhog
+docker image rm project_mailer-service
+docker image rm project_listener-service
+make up_build
+make start
+```
+
+# Update Broker & Frontend to handle listener
+
