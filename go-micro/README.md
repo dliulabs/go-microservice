@@ -218,3 +218,66 @@ make start
 
 browse to frontend [at http://localhost:9080](http://localhost:9080)
 
+# Lab 17: Add mailhog to containers
+
+- Add mailhog 'mailhog/mailhog:latest' to docker
+
+```
+cd project
+make stop
+make down
+docker image rm project_authentication-service
+docker image rm project_broker-service
+docker image rm project_logger-service
+make up_build
+make start
+```
+
+Browse to mailhot web page [http://localhost:8025](http://localhost:8025)
+
+# Lab 18: Add mail service
+
+```
+mkdir -p mail-serivce/cmd/api
+cd mail-service
+go mod init mailer-service
+go mod tidy
+```
+
+- define the mailer interface: type Mail struc{}
+- define the mail message structure.
+
+```
+cd project
+make stop
+make down
+docker image rm project_broker-service
+docker image rm project_postgres
+docker image rm project_authentication-service
+docker image rm project_mongo
+docker image rm project_logger-service
+docker image rm project_mailhog
+docker image rm project_mailer-service
+make up_build
+make start
+```
+
+# Lab 19: Modifying the Broker service to handle mail
+
+# Lab 20: Updating the front end to send mail
+
+```
+cd project
+make stop
+make down
+docker image rm project_broker-service
+docker image rm project_postgres
+docker image rm project_authentication-service
+docker image rm project_mongo
+docker image rm project_logger-service
+docker image rm project_mailhog
+docker image rm project_mailer-service
+make up_build
+make start
+```
+
