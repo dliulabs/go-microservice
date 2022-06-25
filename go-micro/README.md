@@ -325,5 +325,53 @@ make up_build
 make start
 ```
 
-# Update Broker & Frontend to handle listener
+# Lab 23: Update Broker & Frontend to handle listener
+
+
+```
+cd project
+make stop
+make down
+docker image rm project_broker-service
+docker image rm project_postgres
+docker image rm project_authentication-service
+docker image rm project_mongo
+docker image rm project_logger-service
+docker image rm project_mailhog
+docker image rm project_mailer-service
+docker image rm project_listener-service
+make up_build
+make start
+```
+
+Logging is now via RabbitMQ, check logged documents in MongoDB.
+
+# Lab 24: Create logger gRPC server
+
+- define an interface (type)
+- define a message struct
+- add interface methods
+  * LogInfo()
+
+# Lab 25: Convert loggger service to use gRPC
+
+- be sure to rpc.Register(new(RPCServer)) before listening for rpc server.
+
+```
+cd project
+make stop
+make down
+docker image rm project_broker-service
+docker image rm project_postgres
+docker image rm project_authentication-service
+docker image rm project_mongo
+docker image rm project_logger-service
+docker image rm project_mailhog
+docker image rm project_mailer-service
+docker image rm project_listener-service
+make up_build
+make start
+```
+
+Logging is now via RabbitMQ, check logged documents in MongoDB.
 
