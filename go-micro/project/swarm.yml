@@ -1,6 +1,28 @@
 version: "3"
 
 services:
+  caddy:
+    image: kubia/micro-caddy:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+  front-end:
+    image: kubia/front-end:1.0.1
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "9080:9080"
+    environment:
+      BROKER_URL: “http://backend"
+
   broker-service:
     image: kubia/broker-service:1.0.0
     ports:
@@ -83,3 +105,8 @@ services:
       POSTGRES_DB: users
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

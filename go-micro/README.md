@@ -496,3 +496,44 @@ docker stack rm myapp
 
 Should be able to test all frontend buttons.
 
+## Scale service
+
+```
+docker service scale myapp_listener-service=3
+```
+
+## Update service
+
+```
+docker service update --image kubia/logger-service:1.0.1 myapp_logger-service 
+```
+
+# Lab 31: Run frontend in Container
+
+```
+cd front-end
+docker build -f front-end.dockerfile -t kubia/front-end:1.0.0 .
+docker push kubia/front-end:1.0.0 
+
+https://hub.docker.com/repository/docker/kubia/front-end
+```
+
+# Lab 32: Add Caddy as reverse proxy
+
+[Reverse proxy quick-start](https://unix.stackexchange.com/questions/131535/recursive-grep-vs-find-type-f-exec-grep-which-is-more-efficient-faster)
+
+```
+cd project
+docker build -f caddy.dockerfile -t kubia/micro-caddy:1.0.0 .
+docker push kubia/micro-caddy:1.0.0
+```
+
+
+- In caddy, mapping backend:80 & frontend:9080
+- In Frontend, templates using env BROKER_URL
+- In hosts file, define localhost & backend ip to 127.0.0.1
+
+```
+docker stack deploy -c swarm.yml myapp
+docker service ls
+```
