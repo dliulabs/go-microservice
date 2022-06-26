@@ -4,6 +4,9 @@ planning for component Post allocations:
   * frontend: 9080
   * broker service: 8080
   * authentication service 9090
+  * caddy
+    - backend: 80
+    - frontend: 80
 
 
 ```
@@ -523,6 +526,11 @@ https://hub.docker.com/repository/docker/kubia/front-end
 [Reverse proxy quick-start](https://unix.stackexchange.com/questions/131535/recursive-grep-vs-find-type-f-exec-grep-which-is-more-efficient-faster)
 
 ```
+cd front-end
+docker build -f front-end.dockerfile -t kubia/front-end:1.0.1 .
+docker push kubia/front-end:1.0.1 
+https://hub.docker.com/repository/docker/kubia/front-end
+
 cd project
 docker build -f caddy.dockerfile -t kubia/micro-caddy:1.0.0 .
 docker push kubia/micro-caddy:1.0.0
@@ -537,3 +545,6 @@ docker push kubia/micro-caddy:1.0.0
 docker stack deploy -c swarm.yml myapp
 docker service ls
 ```
+
+- when all services are online
+- browse to frontend at http://localhost:80 1551  docker stack rm myapp
