@@ -430,3 +430,69 @@ docker image rm project_listener-service
 make up_build
 make start
 ```
+
+
+# Lab 30: Deploy using Docker Swarm
+
+## build and push images
+
+```
+docker login
+```
+
+```
+cd logger-service
+docker build -f logger-service.dockerfile -t kubia/logger-service:1.0.0 .
+docker push kubia/logger-service:1.0.0 
+
+https://hub.docker.com/repository/docker/kubia/logger-service
+
+cd broker-service
+docker build -f broker-service.dockerfile -t kubia/broker-service:1.0.0 .
+docker push kubia/broker-service:1.0.0 
+
+https://hub.docker.com/repository/docker/kubia/broker-service
+
+cd authentication-service
+docker build -f authentication-service.dockerfile -t kubia/authentication-service:1.0.0 .
+docker push kubia/authentication-service:1.0.0 
+
+https://hub.docker.com/repository/docker/kubia/authentication-service
+
+cd listener-service
+docker build -f listener-service.dockerfile -t kubia/listener-service:1.0.0 .
+docker push kubia/listener-service:1.0.0 
+
+https://hub.docker.com/repository/docker/kubia/listener-service
+
+cd mail-service
+docker build -f mail-service.dockerfile -t kubia/mail-service:1.0.0 .
+docker push kubia/mail-service:1.0.0
+```
+
+## Create Swarm artifacts
+
+```
+cd project
+docker swarm leave --force
+docker swarm init
+docker swarm join-token manager
+docker swarm join-token worker
+```
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2x3uv4h2ll6e7c9glbcbre2600yabn09ohsgyipgq7gauvx4nd-1qvsgfh3keoqdwukxk8drla0h 192.168.65.3:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+```
+docker stack deploy -c swarm.yml myapp
+docker service ls
+docker make start
+
+docker stack rm myapp
+```
+
+Should be able to test all frontend buttons.
+
