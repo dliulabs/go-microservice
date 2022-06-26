@@ -346,14 +346,14 @@ make start
 
 Logging is now via RabbitMQ, check logged documents in MongoDB.
 
-# Lab 24: Create logger gRPC server
+# Lab 24: Create logger RPC server
 
 - define an interface (type)
 - define a message struct
 - add interface methods
   * LogInfo()
 
-# Lab 25: Convert loggger service to use gRPC
+# Lab 25: Convert loggger service to use RPC
 
 - be sure to rpc.Register(new(RPCServer)) before listening for rpc server.
 
@@ -373,5 +373,60 @@ make up_build
 make start
 ```
 
-Logging is now via RabbitMQ, check logged documents in MongoDB.
+Logging is now via gRPC, check logged documents in MongoDB.
 
+# Enable gRPC for logger
+
+## Lab 26: Convert Logger to use gRPC 
+
+[protoc-gen-go-grpc](https://grpc.io/docs/languages/go/quickstart/)
+
+[protoc-gen-go](https://pkg.go.dev/github.com/golang/protobuf/protoc-gen-go)
+
+```
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+brew install protobuf
+protoc --version
+```
+
+```
+mkdir -p logger-service/logs
+touch mkdir -p logger-service/logs/logs.proto
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative logs.proto
+```
+
+```
+touch logger-service/cmd/api/grpc.go
+go mod tidy
+```
+
+## Lab 27 Convert Broker service to use gRPC Logger
+
+```
+mkdir -p broker-service/logs
+cp logger-service/logs/logs.proto broker-service/logs/logs.proto
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative logs.proto
+```
+
+```
+go mod tidy
+```
+
+## Lab 28: Convert frontend to use gRPC endpoint
+
+```
+cd project
+make stop
+make down
+docker image rm project_broker-service
+docker image rm project_postgres
+docker image rm project_authentication-service
+docker image rm project_mongo
+docker image rm project_logger-service
+docker image rm project_mailhog
+docker image rm project_mailer-service
+docker image rm project_listener-service
+make up_build
+make start
+```
